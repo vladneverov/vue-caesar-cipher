@@ -1,4 +1,6 @@
-# cipher
+# Vue Caesar Cipher
+
+![preview](preview.gif)
 
 ## Project setup
 ```
