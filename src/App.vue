@@ -40,12 +40,18 @@
           <h4 class="mt-3">Сдвиг: <strong>{{ selected }}</strong></h4>
         </b-col>
 
-        <b-col lg="2">
-          <b-button @click="encrypt" variant="primary">Зашифровать</b-button>
+        <b-col lg="2" sm="3">
+          <b-button @click="encrypt" class="btn-encrypt"
+                    variant="primary">
+            <b-icon-lock-fill /> Зашифровать
+          </b-button>
         </b-col>
 
-        <b-col lg="2">
-          <b-button @click="decrypt" variant="success">Расшифровать</b-button>
+        <b-col lg="2" sm="4">
+          <b-button @click="decrypt" class="btn-decrypt"
+                    variant="success">
+            <b-icon-unlock-fill /> Расшифровать
+          </b-button>
         </b-col>
 
       </b-row>
@@ -65,13 +71,13 @@ export default {
       selected: null,
       text: '',
       textCipher: '',
-      alphabet: 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя',
+      alphabet: 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ',
       alphabetCipher: ''
     }
   },
   computed: {
     options() {
-      let options = [ { value: null, text: 'Сдвиг' } ]
+      let options = [ { value: null, text: 'Выбрать' } ]
 
       for (let i = 1; i <= 33; i++) {
         options.push({ value: i, text: i })
@@ -101,6 +107,10 @@ export default {
       const numArr = []
       const textArr = text.split('')
 
+      // добавляем в алфавит и нижний его регистр
+      alphabet = alphabet + alphabet.toLowerCase()
+      alphabetCipher = alphabetCipher + alphabetCipher.toLowerCase()
+
       // проверка есть ли в ориг.алфавите такая буква
       textArr.forEach(el => {
         if ( alphabet.indexOf(el) !== -1 ) {
@@ -109,8 +119,6 @@ export default {
            numArr.push(el)
         }
       })
-
-      console.log(numArr)
 
       // заменяем на букву из криптованного алфавита
       return numArr.map(n => {
@@ -136,5 +144,34 @@ export default {
 body {
   background-color: #f9733f;
   font-family: 'Roboto', 'Arial', sans-serif;
+}
+
+.btn-encrypt,
+.btn-decrypt {
+  min-width: 163px;
+}
+
+@media screen and (max-width: 1200px) {
+    .btn-decrypt {
+      margin-left: 10px;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .btn-decrypt {
+      margin: 20px 0;
+    }
+
+    ::placeholder {
+      font-size: 16px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    #textarea1 {
+      margin-bottom: 20px;
+    }
 }
 </style>
