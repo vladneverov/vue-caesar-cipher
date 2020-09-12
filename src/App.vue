@@ -1,90 +1,95 @@
 <template>
-  <div id="app">
-     <b-container class="mt-4">
-       <b-row>
+  <div id="app" class="container mx-auto mt-4">
 
-        <b-col lg="6">
-          <label for="textarea1">
-            <h2>Шифр Цезаря</h2>
-          </label>
-          <b-form-textarea
-            id="textarea1"
-            size="lg"
-            rows="6"
-            placeholder="Напишите текст чтобы зашифровать его"
-            v-model="text"
-          ></b-form-textarea>
-        </b-col>
+    <div class="flex flex-wrap mb-3">
 
-        <b-col lg="6">
-          <label for="textarea1">
-            <h2>Результат</h2>
-          </label>
-          <b-form-textarea
-            id="textarea2"
-            size="lg"
-            rows="6"
-            disabled
-            v-model="textCipher"
-          ></b-form-textarea>
-        </b-col>
+      <div class="w-full md:w-2/4 ml-auto px-2">
+        <label for="textarea1">
+          <h1 class="text-3xl md:text-4xl
+              font-bold text-white mb-2">Шифр Цезаря</h1>
+        </label>
+        <textarea
+          id="textarea1"
+          class="md:text-xl sm:text-base resize-none text-gray-600 border
+                 rounded focus:outline-none
+                 focus:shadow-outline w-full p-3 shadow"
+          size="lg"
+          rows="7"
+          placeholder="Напишите текст чтобы зашифровать его"
+          v-model="text"
+          @keyup.46="text = textCipher = ''"></textarea>
+      </div>
 
-      </b-row>
+      <div class="w-full md:w-2/4 mr-auto px-2">
+        <label>
+          <h1 class="text-3xl md:text-4xl
+              font-bold text-white mb-2">Результат</h1>
+        </label>
+        <textarea
+          class="md:text-xl sm:text-base resize-none text-gray-800
+          border rounded focus:outline-none focus:shadow-outline w-full p-3 shadow"
+          size="lg"
+          rows="7"
+          disabled
+          v-model="textCipher"></textarea>
+      </div>
 
-      <b-row class="mt-4">
+    </div>
 
-        <b-col lg="2">
-          <b-form-select v-model="selected"
-                         :options="options">
-          </b-form-select>
-          <h4 class="mt-3">Сдвиг: <strong>{{ selected }}</strong></h4>
-        </b-col>
+    <div class="flex flex-wrap">
 
-        <b-col lg="2" sm="3">
-          <b-button @click="encrypt" class="btn-encrypt"
-                    variant="primary">
-            <b-icon-lock-fill /> Зашифровать
-          </b-button>
-        </b-col>
+      <div class="w-full md:w-1/6 ml-auto px-2">
+        <label class="block uppercase tracking-wide 
+             text-gray-800 text-xs font-bold mb-2" for="grid-state">
+          Сдвиг <strong>{{ selected }}</strong>
+        </label>
 
-        <b-col lg="2" sm="4">
-          <b-button @click="decrypt" class="btn-decrypt"
-                    variant="success">
-            <b-icon-unlock-fill /> Расшифровать
-          </b-button>
-        </b-col>
+        <div class="relative w-40">
+          <select class="block appearance-none w-full shadow 
+          bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8
+          rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          id="grid-state"
+          v-model="selected">
+            <option value="">Выбрать</option>
+            <option v-for="(val, i) in 33" :key="i">{{ val }}</option>
+          </select>
+        </div>
+      </div>
 
-      </b-row>
+      <div class="w-full md:w-5/6 ml-auto px-2 mt-6 md:pl-12">
+        <button class="btn btn-blue mr-4"
+                @click="encrypt">
+          <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+            clip-rule="evenodd" />
+          </svg>
+          <span>Зашифровать</span>
+        </button>
 
-     </b-container>
+        <button class="btn btn-green"
+                @click="decrypt">
+          <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 015.905-.75 1 1 0 001.937-.5A5.002 5.002 0 0010 2z" />
+          </svg>
+          <span>Расшифровать</span>
+        </button>
+      </div>
+
+    </div>
   </div>
 </template>
 
 <script>
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-
 export default {
   name: 'App',
   data() {
     return {
-      selected: null,
+      selected: "",
       text: '',
       textCipher: '',
       alphabet: 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ',
-      alphabetCipher: ''
-    }
-  },
-  computed: {
-    options() {
-      let options = [ { value: null, text: 'Выбрать' } ]
-
-      for (let i = 1; i <= 33; i++) {
-        options.push({ value: i, text: i })
-      }
-
-      return options
-
+      alphabetCipher: '',
     }
   },
   methods: {
@@ -114,9 +119,9 @@ export default {
       // проверка есть ли в ориг.алфавите такая буква
       textArr.forEach(el => {
         if ( alphabet.indexOf(el) !== -1 ) {
-           numArr.push( alphabet.indexOf(el) )
+          numArr.push( alphabet.indexOf(el) )
         } else {
-           numArr.push(el)
+          numArr.push(el)
         }
       })
 
@@ -141,37 +146,5 @@ export default {
 </script>
 
 <style>
-body {
-  background-color: #f9733f;
-  font-family: 'Roboto', 'Arial', sans-serif;
-}
 
-.btn-encrypt,
-.btn-decrypt {
-  min-width: 163px;
-}
-
-@media screen and (max-width: 1200px) {
-    .btn-decrypt {
-      margin-left: 10px;
-    }
-}
-
-@media screen and (max-width: 580px) {
-    .btn-decrypt {
-      margin: 20px 0;
-    }
-
-    ::placeholder {
-      font-size: 16px;
-    }
-
-    h2 {
-      font-size: 24px;
-    }
-
-    #textarea1 {
-      margin-bottom: 20px;
-    }
-}
 </style>

@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
-Vue.use(BootstrapVue)
-Vue.use(IconsPlugin)
+import './assets/css/tailwind.css'
 
 Vue.config.productionTip = false
 
